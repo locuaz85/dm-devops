@@ -1,0 +1,37 @@
+# Example Terraform variables file
+# Copy this to terraform.tfvars and update values
+
+aws_region            = "us-east-1"
+environment           = "dev"
+cluster_name          = "my-k3s-cluster"
+vpc_cidr              = "10.0.0.0/16"
+public_subnet_cidr    = "10.0.1.0/24"
+
+# Instance types
+instance_type_server  = "t3.medium"  # Control plane (requires more resources)
+instance_type_worker  = "t3.small"   # Worker nodes
+
+# Worker nodes count
+num_workers           = 2
+
+# IMPORTANT: Create a key pair in AWS console or CLI first!
+# aws ec2 create-key-pair --key-name my-k3s-key --query 'KeyMaterial' --output text > my-k3s-key.pem
+# chmod 400 my-k3s-key.pem
+key_name              = "my-k3s-key"  # Replace with your key name
+
+# Allow SSH from specific IPs (restrict in production!)
+ssh_allowed_cidrs     = ["0.0.0.0/0"]  # CHANGE THIS: Use your IP range (e.g., ["203.0.113.0/24"])
+
+# Features
+enable_ebs_csi_driver = true   # Enable AWS EBS CSI for dynamic PVs
+enable_traefik        = true   # Use Traefik ingress (default with k3s)
+
+# Optional: pre-set k3s token (will be auto-generated if left empty)
+# k3s_token = "your-secret-token-here"
+
+tags = {
+  Project     = "k3s"
+  ManagedBy   = "Terraform"
+  Environment = "dev"
+  Owner       = "DevOps"
+}
